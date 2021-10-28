@@ -1,30 +1,22 @@
-## Secrets necesarios
-# HUB_DOCKER_USERNAME
-# HUB_DOCKER_PASSWORD
-# SONAR_TOKEN
-# GITHUB_TOKEN
-
 name: CI Build
 on:
   push:
     branches:
       - develop
-      - test*
+      - test
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [ opened, synchronize, reopened, closed ]
 jobs:
-  sendSonar:
+  QUALITY_GATES_AND_TEST:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[sonar skip]') || github.ref == 'refs/heads/develop'"
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      # Checkout
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # JDK 11 para Sonar
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -37,17 +29,19 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      # Envío Sonar
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=products-service-obligatorio -Dsonar.organization=obligatorio-devops-2021 -Dsonar.host.url="https://sonarcloud.io"
-  build_and_test_and_push:
+      - name: Run Analysis and Wait for Quality Gate
+        run: |
+          ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.host.url="https://sonarcloud.io" \
+          -Dsonar.organization=obligatorio-devops-2021 \
+          -Dsonar.projectKey=products-service-obligatorio \
+  BUILD_AND_PUSH-IMAGE:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    needs: ['QUALITY_GATES_AND_TEST']
     steps:
       # Checkout
       - uses: actions/checkout@v2
@@ -64,7 +58,4 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       # Package con Maven
       - name: Build project with Maven
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./mvnw -B package -Pjib -Djib.to.auth.username=${{ secrets.HUB_DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.HUB_DOCKER_PASSWORD }}
-              
+        run: "./mvnw -B package -Pjib -Djib.to.auth.username=${{ secrets.HUB_DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.HUB_DOCKER_PASSWORD }}"
