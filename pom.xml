@@ -12,10 +12,17 @@
 	<artifactId>products-service-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>products-service-example</name>
-	<description>Demo project for migrating Monolith to Microservices</description>
+	<description>Proyecto Products Service Obligatorio</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<project.scm.id>github</project.scm.id>
 	</properties>
+	<scm>
+        <connection>scm:git:https://github.com/ignaciolopez409/products-service.git</connection>
+        <developerConnection>scm:git:https://github.com/ignaciolopez409/products-service.git</developerConnection>
+        <url>https://github.com/ignaciolopez409/products-service</url>
+        <tag>HEAD</tag>
+    </scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,8 +55,56 @@
 					</execution>
 				</executions>
 			</plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
-
+ <profiles>
+        <profile>
+            <id>jib</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <registry>https://registry.hub.docker.com</registry>
+                            <from>
+                                <image>openjdk:8-jdk-alpine</image>
+                            </from>
+                            <to>
+                                <image>ignaciolopezventimiglia/${project.artifactId}</image>
+                                <tags>${project.version}</tags>
+                            </to>
+                            <container>
+                                <args>
+                                    <arg>$APP_ARGS</arg>
+                                </args>
+                                <mainClass>uy.edu.ort.devops.productsserviceexample.ProductsServiceExampleApplication</mainClass>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                            </container>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
