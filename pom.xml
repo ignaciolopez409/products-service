@@ -95,13 +95,6 @@
                                 <tags>${project.version}</tags>
                             </to>
                             <container>
-                             <extraDirectories>
-                                <permissions>
-                                    <permission>
-                                        <mode>755</mode>
-                                    </permission>
-                                </permissions>
-                            </extraDirectories>
                                 <args>
                                     <arg>$APP_ARGS</arg>
                                 </args>
