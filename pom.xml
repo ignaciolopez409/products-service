@@ -13,16 +13,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>products-service-example</name>
 	<description>Proyecto Products Service Obligatorio</description>
+	
 	<properties>
 		<java.version>1.8</java.version>
 		<project.scm.id>github</project.scm.id>
 	</properties>
+	
 	<scm>
         <connection>scm:git:https://github.com/ignaciolopez409/products-service.git</connection>
         <developerConnection>scm:git:https://github.com/ignaciolopez409/products-service.git</developerConnection>
         <url>https://github.com/ignaciolopez409/products-service</url>
         <tag>HEAD</tag>
     </scm>
+    
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
