@@ -6,12 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from repository test -->
 	</parent>
+	
 	<groupId>uy.edu.ort.devops</groupId>
-	<artifactId>products-service-example</artifactId>
+	<artifactId>products-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>products-service-example</name>
+	<name>products-service</name>
 	<description>Proyecto Products Service Obligatorio</description>
 	
 	<properties>
@@ -95,9 +96,6 @@
                                 <tags>${project.version}</tags>
                             </to>
                             <container>
-                                <args>
-                                    <arg>$APP_ARGS</arg>
-                                </args>
                                 <mainClass>uy.edu.ort.devops.productsserviceexample.ProductsServiceExampleApplication</mainClass>
                                 <ports>
                                     <port>8080</port>
