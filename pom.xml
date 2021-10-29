@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository test -->
 	</parent>
 	<groupId>uy.edu.ort.devops</groupId>
-	<artifactId>products-service-example</artifactId>
+	<artifactId>products-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>products-service-example</name>
+	<name>products-service</name>
 	<description>Proyecto Products Service Obligatorio</description>
 	
 	<properties>
