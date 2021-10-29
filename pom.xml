@@ -10,7 +10,7 @@
 	
 	<groupId>uy.edu.ort.devops</groupId>
 	<artifactId>products-service</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>products-service</name>
 	<description>Proyecto Products Service Obligatorio</description>
 	
