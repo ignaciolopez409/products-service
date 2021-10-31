@@ -9,7 +9,7 @@
 	</parent>
 	
 	<groupId>uy.edu.ort.devops</groupId>
-	<artifactId>products-service</artifactId>
+	<artifactId>products-service-obligatorio</artifactId>
 	<version>0.0.4-SNAPSHOT</version>
 	<name>products-service</name>
 	<description>Proyecto Products Service Obligatorio</description>
