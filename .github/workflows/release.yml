@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    types: [ closed ]
+#  pull_request:
+#    types: [ closed ]
 jobs:
   RELEASE_AND_PUSH-IMAGE:
     runs-on: ubuntu-latest
