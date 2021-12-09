@@ -28,6 +28,7 @@ jobs:
         run: |
           git config --global user.name "${{ github.actor}}"
           git config --global user.email "${{ github.actor }}@gmail.com"
+      #Get POM Version and branch
       - name: Extract branch name
         shell: bash
         run: |
